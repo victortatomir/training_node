@@ -1,15 +1,23 @@
-import express from 'express'
-import {json} from 'body-parser'
-import {productRouter} from './routes'
+import express, {Application, Request, Response, NextFunction} from 'express'
+import bodyParser from 'body-parser'
+import connect from "./connect"
+import * as ProductController from "./controllers/product_controller"
 
-const app = express()
+const app: Application = express();
+const port :number = 3000
+const db:string = "mongodb://localhost/OnlineShop"
+
+connect(db);
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+
+app.get("/products",ProductController.allProducts)
+app.get("/products/:id",ProductController.getOneProduct)
+app.post("/products",ProductController.addProduct)
+app.put("/products/:id",ProductController.updateProduct)
 
 
-app.use(json(), productRouter)
-
-app.listen(3000, ()=>{
-    console.log("server running at port 3000")
+app.listen(port,()=>{
+    console.log(`Server running on ${port}`);
 })
-
-
-

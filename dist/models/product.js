@@ -18,22 +18,17 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-const body_parser_1 = __importDefault(require("body-parser"));
-const connect_1 = __importDefault(require("./connect"));
-const ProductController = __importStar(require("./controllers/product_controller"));
-const app = express_1.default();
-const port = 3000;
-const db = "mongodb://localhost/OnlineShop";
-connect_1.default(db);
-app.use(body_parser_1.default.json());
-app.use(body_parser_1.default.urlencoded({ extended: true }));
-app.get("/products", ProductController.allProducts);
-app.post("/products", ProductController.addProduct);
-app.listen(port, () => {
-    console.log(`Server running on ${port}`);
+const mongoose_1 = __importStar(require("mongoose"));
+const ProductSchema = new mongoose_1.Schema({
+    id: { type: Number, required: true },
+    name: { type: String, required: true },
+    description: { type: String, required: true },
+    price: { type: Number, required: true },
+    weight: { type: Number, required: true },
+    category: { type: Number, required: true },
+    supplier: { type: Number, required: true },
+    imageUrl: { type: String, required: true },
 });
+const Product = mongoose_1.default.model("Product", ProductSchema);
+exports.default = Product;
