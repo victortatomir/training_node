@@ -1,15 +1,14 @@
-import { SCHED_NONE } from "cluster";
 import mongoose, {Schema, Document} from "mongoose";
 
 export interface ProductInterface extends Document{
-     id:number;
-     name:string;
-     description:string;
-     price:number;
-     weight:number;
-     category:number;
-     supplier:number;
-     imageUrl:string;
+    id:number;
+    name:string;
+    description:string;
+    price:number;
+    weight:number;
+    category:number;
+    supplier:number;
+    imageUrl:string;
 }
 
 const ProductSchema: Schema = new Schema({
