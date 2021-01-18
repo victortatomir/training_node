@@ -16,6 +16,7 @@ app.get("/products",ProductController.allProducts)
 app.get("/products/:id",ProductController.getOneProduct)
 app.post("/products",ProductController.addProduct)
 app.put("/products/:id",ProductController.updateProduct)
+app.delete("/products/:id",ProductController.deleteProduct)
 
 
 app.listen(port,()=>{

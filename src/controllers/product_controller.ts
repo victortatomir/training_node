@@ -33,7 +33,7 @@ export const addProduct = (req: Request, res: Response) =>{
 }
 
 export const updateProduct = (req: Request, res: Response) => {
-    const product = Product.updateOne({id:Number(req.params.id)},(err: any)=>{
+    const product = Product.findOneAndUpdate({id:Number(req.params.id)},req.body,{new:true},(err: any,product:any)=>{
             if(err){
                 res.send(err)
             } else{
@@ -44,12 +44,12 @@ export const updateProduct = (req: Request, res: Response) => {
 }
 
 
-// export const deleteProduct = (req: Request, res: Response) =>{
-//     const product = Product.deleteOne({id: req.params.id}, (err) => {
-//         if(err){
-//             res.send(err)
-//         } else{
-//             res.send("Product deleted")
-//         }
-//     })
-// }
+export const deleteProduct = (req: Request, res: Response) =>{
+    const product = Product.deleteMany({id: Number(req.params.id)},{new:true}, (err:any) => {
+        if(err){
+            res.send(err)
+        } else{
+            res.send("Product deleted")
+        }
+    })
+}
