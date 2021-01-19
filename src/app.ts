@@ -14,9 +14,11 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.get("/products",ProductController.allProducts)
 app.get("/products/:id",ProductController.getOneProduct)
+app.get("/products/category/:category", ProductController.getProductCategory)
 app.post("/products",ProductController.addProduct)
 app.put("/products/:id",ProductController.updateProduct)
 app.delete("/products/:id",ProductController.deleteProduct)
+
 
 
 app.listen(port,()=>{

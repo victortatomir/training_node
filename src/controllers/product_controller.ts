@@ -53,3 +53,14 @@ export const deleteProduct = (req: Request, res: Response) =>{
         }
     })
 }
+
+
+export const getProductCategory = (req: Request, res: Response) =>{
+    const product = Product.find({category:Number(req.params.category)},(err: any, products:any) =>{
+        if(err){
+            res.send(err)
+        } else{
+            res.send(products)
+        }
+    })
+}
