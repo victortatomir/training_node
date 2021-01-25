@@ -2,54 +2,50 @@ import { Request, Response } from "express"
 import OrderDetail from "../models/orderDetail"
 
 
-export const getOrderDetail = (req:Request, res:Response) => {
-    const orderDetail = OrderDetail.find((err: any, orderDetail:any) =>{
-        if(err){
-            res.send(err)
-        } else {
-            res.send(orderDetail)
-        }
-    })
+export const getOrderDetail = async (req:Request, res:Response) :Promise<void> => {
+    try{
+        const orderDetail = await OrderDetail.find();
+        res.send(orderDetail);
+    }catch(err){
+        res.send(err);
+    }
 }
 
-export const getOrderDetailById = (req:Request, res:Response) =>{
-    const orderDetail = OrderDetail.find({order: Number(req.params.order),product:Number(req.params.product)}, (err:any, orderDetail:any)=>{
-        if(err){
-            res.send(err)
-        } else{
-            res.send(orderDetail)
-        }
-    })
+export const getOrderDetailById = async (req:Request, res:Response) :Promise<void> =>{
+    try{
+        const orderDetail = await OrderDetail.find({order: Number(req.params.order),product:Number(req.params.product)});
+        res.send(orderDetail);
+
+    }catch(err){
+        res.send(err);
+    }
 }
 
-export const addOrderDetail = (req:Request, res:Response) =>{
-    const orderDetail = new OrderDetail(req.body)
-    orderDetail.save((err:any) =>{
-        if(err){
-            res.send(err)
-        } else{
-            res.send(orderDetail)
-        }
-    })
+export const addOrderDetail = async (req:Request, res:Response) :Promise<void> =>{
+    try{
+        const orderDetail = new OrderDetail(req.body);
+        const savedOrderDetail = orderDetail.save();
+        res.send(savedOrderDetail);
+    }catch(err){
+        res.send(err);
+    }
 }
 
 
-export const removeOrderDetail = (req:Request, res:Response) =>{
-    const orderDetail = OrderDetail.deleteMany({order: Number(req.params.order),product:Number(req.params.product)},{new:true}, (err:any) => {
-        if(err){
-            res.send(err)
-        } else{
-            res.send("OrderDetail deleted")
-        }
-    })
+export const removeOrderDetail = async (req:Request, res:Response) :Promise<void> =>{
+    try{
+        const orderDetail = await OrderDetail.deleteMany({order: Number(req.params.order),product:Number(req.params.product)},{new:true});
+        res.send("OrderDetail deleted");
+    }catch(err){
+        res.send(err);
+    }
 }
 
-export const updateOrderDetail = (req:Request, res:Response) =>{
-    const orderDetail = OrderDetail.findOneAndUpdate({order: Number(req.params.order),product:Number(req.params.product)},req.body,{new:true},(err: any,orderDetail:any)=>{
-        if(err){
-            res.send(err)
-        } else{
-            res.send(orderDetail)
-        }
-    })
+export const updateOrderDetail = async (req:Request, res:Response) :Promise<void> =>{
+    try{
+        const orderDetail = await OrderDetail.findOneAndUpdate({order: Number(req.params.order),product:Number(req.params.product)},req.body,{new:true});
+        res.send(orderDetail);
+    }catch(err){
+        res.send(err);
+    }
 }

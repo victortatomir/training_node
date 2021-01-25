@@ -2,54 +2,51 @@ import { Request, Response } from "express"
 import Revenue from "../models/revenue"
 
 
-export const getRevenue = (req:Request, res:Response) => {
-    const revenue = Revenue.find((err: any, revenue:any) =>{
-        if(err){
-            res.send(err)
-        } else {
-            res.send(revenue)
-        }
-    })
+export const getRevenue = async (req:Request, res:Response) :Promise<void> => {
+    try{
+        const revenue = await Revenue.find()
+        res.send(revenue)
+    }catch(err){
+        res.send(err)
+    }
 }
 
-export const getRevenueById = (req:Request, res:Response) =>{
-    const revenue = Revenue.find({id: Number(req.params.id)}, (err:any, revenue:any)=>{
-        if(err){
-            res.send(err)
-        } else{
-            res.send(revenue)
-        }
-    })
+export const getRevenueById = async (req:Request, res:Response) :Promise<void> =>{
+    try{
+        const revenue = await Revenue.find({id: Number(req.params.id)})
+        res.send(revenue)
+    }catch(err){
+        res.send(err)
+    }
 }
 
-export const addRevenue = (req:Request, res:Response) =>{
-    const revenue = new Revenue(req.body)
-    revenue.save((err:any) =>{
-        if(err){
-            res.send(err)
-        } else{
-            res.send(revenue)
-        }
-    })
+export const addRevenue = async (req:Request, res:Response) :Promise<void> =>{
+    try{
+        const revenue = new Revenue(req.body)
+        const savedRevenue = await revenue.save()
+        res.send(savedRevenue)
+
+    }catch(err){
+        res.send(err)
+    }
 }
 
 
-export const removeRevenue = (req:Request, res:Response) =>{
-    const revenue = Revenue.deleteMany({id: Number(req.params.id)},{new:true}, (err:any) => {
-        if(err){
-            res.send(err)
-        } else{
-            res.send("Revenue deleted")
-        }
-    })
+export const removeRevenue = async (req:Request, res:Response) :Promise<void> =>{
+
+    try{
+        const revenue = await Revenue.deleteMany({id: Number(req.params.id)},{new:true})
+        res.send("Revenue deleted")
+    }catch(err){
+        res.send(err)
+    }
 }
 
-export const updateRevenue = (req:Request, res:Response) =>{
-    const revenue = Revenue.findOneAndUpdate({id:Number(req.params.id)},req.body,{new:true},(err: any,revenue:any)=>{
-        if(err){
-            res.send(err)
-        } else{
-            res.send(revenue)
-        }
-    })
+export const updateRevenue = async (req:Request, res:Response) :Promise<void> =>{
+    try{
+        const revenue = await Revenue.findOneAndUpdate({id:Number(req.params.id)},req.body,{new:true})
+        res.send(revenue)
+    }catch(err){
+        res.send(err)
+    }
 }
