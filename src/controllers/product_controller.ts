@@ -1,5 +1,6 @@
 import { Request, Response } from "express"
 import  Product  from "../models/product"
+import ProductCategory from "../models/category"
 
 export const allProducts = (req: Request, res: Response) =>{
     const products = Product.find((err: any, products:any) =>{
@@ -50,6 +51,39 @@ export const deleteProduct = (req: Request, res: Response) =>{
             res.send(err)
         } else{
             res.send("Product deleted")
+        }
+    })
+}
+
+
+export const getProductCategory = (req: Request, res: Response) =>{
+    const product = Product.find({category:Number(req.params.category)},(err: any, products:any) =>{
+        if(err){
+            res.send(err)
+        } else{
+            res.send(products)
+        }
+    })
+}
+
+export const addProductByCategory = (req: Request, res: Response) =>{
+    ProductCategory.exists({id:Number(req.params.category)}, (err, result)=>{
+        if(err){
+            res.send(err)
+        }else{
+            if(result){
+                const product = new Product(req.body)
+                product.category = Number(req.params.category);
+                product.save((err:any) =>{
+                if(err){
+                    res.send(err)
+                } else{
+                    res.send(product)
+                }
+                })
+            }else{
+                res.send("Invalid category!")
+            }
         }
     })
 }
