@@ -2,54 +2,49 @@ import { Request, Response } from "express"
 import Customer from "../models/customer"
 
 
-export const getCustomer = (req:Request, res:Response) => {
-    const customer = Customer.find((err: any, customer:any) =>{
-        if(err){
-            res.send(err)
-        } else {
-            res.send(customer)
-        }
-    })
+export const getCustomer = async (req:Request, res:Response) :Promise<void> => {
+    try{
+        const customer = await Customer.find();
+        res.send(customer);
+    }catch(err){
+        res.send(err);
+    }
 }
 
-export const getCustomerById = (req:Request, res:Response) =>{
-    const customer = Customer.find({id: Number(req.params.id)}, (err:any, customer:any)=>{
-        if(err){
-            res.send(err)
-        } else{
-            res.send(customer)
-        }
-    })
+export const getCustomerById = async (req:Request, res:Response) :Promise<void> =>{
+    try{
+        const customer = await Customer.find({id: Number(req.params.id)});
+        res.send(customer);
+    }catch(err){
+        res.send(err);
+    }
 }
 
-export const addCustomer = (req:Request, res:Response) =>{
-    const customer = new Customer(req.body)
-    customer.save((err:any) =>{
-        if(err){
-            res.send(err)
-        } else{
-            res.send(customer)
-        }
-    })
+export const addCustomer = async (req:Request, res:Response) :Promise<void> =>{
+    try{
+        const customer = new Customer(req.body);
+        const savedCustomer = await customer.save();
+        res.send(savedCustomer);
+    }catch(err){
+        res.send(err);
+    }
 }
 
 
-export const removeCustomer = (req:Request, res:Response) =>{
-    const customer = Customer.deleteMany({id: Number(req.params.id)},{new:true}, (err:any) => {
-        if(err){
-            res.send(err)
-        } else{
-            res.send("Customer deleted")
-        }
-    })
+export const removeCustomer = async (req:Request, res:Response) :Promise<void> =>{
+    try{
+        const customer = await Customer.deleteMany({id: Number(req.params.id)},{new:true});
+        res.send("Customer deleted");
+    }catch(err){
+        res.send(err);
+    }
 }
 
-export const updateCustomer = (req:Request, res:Response) =>{
-    const customer = Customer.findOneAndUpdate({id:Number(req.params.id)},req.body,{new:true},(err: any,customer:any)=>{
-        if(err){
-            res.send(err)
-        } else{
-            res.send(customer)
-        }
-    })
+export const updateCustomer = async(req:Request, res:Response) :Promise<void> =>{
+    try{
+        const customer = await Customer.findOneAndUpdate({id:Number(req.params.id)},req.body,{new:true});
+        res.send(customer);
+    }catch(err){
+        res.send(err);
+    }
 }

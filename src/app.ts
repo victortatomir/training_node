@@ -1,4 +1,4 @@
-import express, {Application, Request, Response, NextFunction} from 'express'
+import express, { Application } from 'express'
 import bodyParser from 'body-parser'
 import connect from "./connect"
 import * as ProductController from "./controllers/product_controller"
@@ -9,10 +9,14 @@ import * as RevenueController from "./controllers/revenue_controller"
 import * as OrderController from "./controllers/order_controller"
 import * as OrderDetailController from "./controllers/orderDetail_controller"
 import * as StockController from "./controllers/stock_controller"
+import * as SupplierController from "./controllers/supplier_controller"
+import { asyncMiddleware } from './middlewares/async'
+
+
 
 const app: Application = express();
-const port :number = 3000
-const db:string = "mongodb://localhost/OnlineShop"
+const port = 3001;
+const db = "mongodb://localhost/OnlineShop";
 
 connect(db);
 
@@ -21,109 +25,123 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 //                  Rest calls for products
 // -----------------------------------------------------------------------------------
-app.get("/products", ProductController.allProducts)
-app.get("/products/:id", ProductController.getOneProduct)
+app.get("/products", asyncMiddleware(ProductController.allProducts));
+app.get("/products/:id", asyncMiddleware(ProductController.getOneProduct));
 app.get("/products/category/:category", ProductController.getProductCategory)
 
-app.post("/products" ,ProductController.addProduct)
-app.post("/products/category/:category", ProductController.addProductByCategory)
+app.post("/products" ,asyncMiddleware(ProductController.addProduct));
+app.post("/products/category/:category", asyncMiddleware(ProductController.addProductByCategory));
 
-app.put("/products/:id", ProductController.updateProduct)
+app.put("/products/:id", asyncMiddleware(ProductController.updateProduct));
 
-app.delete("/products/:id",ProductController.deleteProduct)
+app.delete("/products/:id", asyncMiddleware(ProductController.deleteProduct));
 
 //                 Rest calls for category
 //-------------------------------------------------------------------------------------
 
-app.get("/category", CategoryController.getCategory)
-app.get("/category/:id", CategoryController.getCategoryById)
+app.get("/category", asyncMiddleware(CategoryController.getCategory));
+app.get("/category/:id", asyncMiddleware(CategoryController.getCategoryById));
 
-app.post("/category", CategoryController.addCategory)
+app.post("/category", asyncMiddleware(CategoryController.addCategory));
 
-app.put("/category/:id", CategoryController.updateCategory)
+app.put("/category/:id", asyncMiddleware(CategoryController.updateCategory));
 
-app.delete("/category/:id", CategoryController.removeCategory)
+app.delete("/category/:id", asyncMiddleware(CategoryController.removeCategory));
 
 //                 Rest calls for Location
 //-------------------------------------------------------------------------------------
 
 
-app.get("/location", LocationController.getLocation)
-app.get("/location/:id", LocationController.getLocationById)
+app.get("/location", asyncMiddleware(LocationController.getLocation));
+app.get("/location/:id", asyncMiddleware(LocationController.getLocationById));
 
-app.post("/location", LocationController.addLocation)
+app.post("/location", asyncMiddleware(LocationController.addLocation));
 
-app.put("/location/:id", LocationController.updateLocation)
+app.put("/location/:id", asyncMiddleware(LocationController.updateLocation));
 
-app.delete("/location/:id", LocationController.removeLocation)
+app.delete("/location/:id", asyncMiddleware(LocationController.removeLocation));
 
 //                 Rest calls for Customer
 //-------------------------------------------------------------------------------------
 
 
-app.get("/customer", CustomerController.getCustomer)
-app.get("/customer/:id", CustomerController.getCustomerById)
+app.get("/customer", asyncMiddleware(CustomerController.getCustomer));
+app.get("/customer/:id", asyncMiddleware(CustomerController.getCustomerById));
 
-app.post("/customer", CustomerController.addCustomer)
+app.post("/customer", asyncMiddleware(CustomerController.addCustomer));
 
-app.put("/customer/:id", CustomerController.updateCustomer)
+app.put("/customer/:id", asyncMiddleware(CustomerController.updateCustomer));
 
-app.delete("/customer/:id", CustomerController.removeCustomer)
+app.delete("/customer/:id", asyncMiddleware(CustomerController.removeCustomer));
 
 
 //                 Rest calls for Revenue
 //-------------------------------------------------------------------------------------
 
 
-app.get("/revenue", RevenueController.getRevenue)
-app.get("/revenue/:id", RevenueController.getRevenueById)
+app.get("/revenue", asyncMiddleware(RevenueController.getRevenue));
+app.get("/revenue/:id", asyncMiddleware(RevenueController.getRevenueById));
 
-app.post("/revenue", RevenueController.addRevenue)
+app.post("/revenue", asyncMiddleware(RevenueController.addRevenue));
 
-app.put("/revenue/:id", RevenueController.updateRevenue)
+app.put("/revenue/:id", asyncMiddleware(RevenueController.updateRevenue));
 
-app.delete("/revenue/:id", RevenueController.removeRevenue)
+app.delete("/revenue/:id", asyncMiddleware(RevenueController.removeRevenue));
 
 //                 Rest calls for Order
 //-------------------------------------------------------------------------------------
 
 
-app.get("/order", OrderController.getOrder)
-app.get("/order/:id", OrderController.getOrderById)
+app.get("/order", asyncMiddleware(OrderController.getOrder));
+app.get("/order/:id",asyncMiddleware( OrderController.getOrderById));
 
-app.post("/order", OrderController.addOrder)
+app.post("/order", asyncMiddleware(OrderController.addOrder));
 
-app.put("/order/:id", OrderController.updateOrder)
+app.put("/order/:id", asyncMiddleware(OrderController.updateOrder));
 
-app.delete("/order/:id", OrderController.removeOrder)
+app.delete("/order/:id", asyncMiddleware(OrderController.removeOrder));
 
 
 //                 Rest calls for OrderDetail
 //-------------------------------------------------------------------------------------
 
 
-app.get("/orderDetail", OrderDetailController.getOrderDetail)
-app.get("/orderDetail/:order/:product", OrderDetailController.getOrderDetailById)
+app.get("/orderDetail", asyncMiddleware(OrderDetailController.getOrderDetail));
+app.get("/orderDetail/:order/:product", asyncMiddleware(OrderDetailController.getOrderDetailById));
 
-app.post("/orderDetail", OrderDetailController.addOrderDetail)
+app.post("/orderDetail", asyncMiddleware(OrderDetailController.addOrderDetail));
 
-app.put("/orderDetail/:order/:product", OrderDetailController.updateOrderDetail)
+app.put("/orderDetail/:order/:product", asyncMiddleware(OrderDetailController.updateOrderDetail));
 
-app.delete("/orderDetail/:order/:product", OrderDetailController.removeOrderDetail)
+app.delete("/orderDetail/:order/:product", asyncMiddleware(OrderDetailController.removeOrderDetail));
 
 
 //                 Rest calls for Stock
 //-------------------------------------------------------------------------------------
 
 
-app.get("/stock", StockController.getStock)
-app.get("/stock/:product/:location", StockController.getStockById)
+app.get("/stock", asyncMiddleware(StockController.getStock));
+app.get("/stock/:product/:location", asyncMiddleware(StockController.getStockById));
 
-app.post("/stock", StockController.addStock)
+app.post("/stock", asyncMiddleware(StockController.addStock));
 
-app.put("/stock/:product/:location", StockController.updateStock)
+app.put("/stock/:product/:location", asyncMiddleware(StockController.updateStock));
 
-app.delete("/stock/:product/:location", StockController.removeStock)
+app.delete("/stock/:product/:location", asyncMiddleware(StockController.removeStock));
+
+
+//                 Rest calls for Supplier
+//-------------------------------------------------------------------------------------
+
+
+app.get("/supplier", asyncMiddleware(SupplierController.getSupplier));
+app.get("/supplier/:id", asyncMiddleware(SupplierController.getSupplierById));
+
+app.post("/supplier", asyncMiddleware(SupplierController.addSupplier));
+
+app.put("/supplier/:id",asyncMiddleware(SupplierController.updateSupplier));
+
+app.delete("/supplier/:id", asyncMiddleware(SupplierController.removeSupplier));
 
 
 
