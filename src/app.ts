@@ -11,6 +11,7 @@ import * as OrderDetailController from "./controllers/orderDetail_controller"
 import * as StockController from "./controllers/stock_controller"
 import * as SupplierController from "./controllers/supplier_controller"
 import { asyncMiddleware } from './middlewares/async'
+import cors from 'cors'
 
 
 
@@ -22,10 +23,11 @@ connect(db);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(cors())
 
 //                  Rest calls for products
 // -----------------------------------------------------------------------------------
-app.get("/products", asyncMiddleware(ProductController.allProducts));
+app.get("/products", cors(),asyncMiddleware(ProductController.allProducts));
 app.get("/products/:id", asyncMiddleware(ProductController.getOneProduct));
 app.get("/products/category/:category", ProductController.getProductCategory)
 

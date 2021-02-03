@@ -1,6 +1,7 @@
-import { Request, Response } from "express"
+import { request, Request, Response } from "express"
 import ProductCategory from "../models/category"
-import Product from "../models/product"
+import Product, { ProductInterface } from "../models/product"
+import validatorProduct from "../validators/products/validatorProduct"
 
 export const allProducts = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -13,7 +14,6 @@ export const allProducts = async (req: Request, res: Response): Promise<void> =>
 
 export const getOneProduct = async (req: Request, res: Response): Promise<void> => {
 
-
     try {
         const product = await Product.find({ id: Number(req.params.id) })
         res.send(product)
@@ -25,7 +25,9 @@ export const getOneProduct = async (req: Request, res: Response): Promise<void> 
 
 export const addProduct = async (req: Request, res: Response): Promise<void> => {
     try {
-        const product = new Product(req.body)
+        const productObject : ProductInterface = req.body;
+        validatorProduct(productObject);
+        const product = new Product(req.body);
         const savedProduct = await product.save();
         res.send(savedProduct)
     } catch (err) {
@@ -35,6 +37,8 @@ export const addProduct = async (req: Request, res: Response): Promise<void> => 
 
 export const updateProduct = async (req: Request, res: Response) :Promise<void> => {
     try {
+        const productObject : ProductInterface = req.body;
+        validatorProduct(productObject);
         const product = await Product.findOneAndUpdate({ id: Number(req.params.id) }, req.body, { new: true })
         res.send(product)
     } catch (err) {

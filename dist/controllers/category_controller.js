@@ -39,20 +39,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addProductByCategory = exports.getProductCategory = exports.deleteProduct = exports.updateProduct = exports.addProduct = exports.getOneProduct = exports.allProducts = void 0;
+exports.updateCategory = exports.removeCategory = exports.addCategory = exports.getCategoryById = exports.getCategory = void 0;
 var category_1 = __importDefault(require("../models/category"));
-var product_1 = __importDefault(require("../models/product"));
-var validatorProduct_1 = __importDefault(require("../validators/products/validatorProduct"));
-var allProducts = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var products, err_1;
+var getCategory = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var category, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, product_1.default.find()];
+                return [4 /*yield*/, category_1.default.find()];
             case 1:
-                products = _a.sent();
-                res.send(products);
+                category = _a.sent();
+                res.send(category);
                 return [3 /*break*/, 3];
             case 2:
                 err_1 = _a.sent();
@@ -62,17 +60,17 @@ var allProducts = function (req, res) { return __awaiter(void 0, void 0, void 0,
         }
     });
 }); };
-exports.allProducts = allProducts;
-var getOneProduct = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var product, err_2;
+exports.getCategory = getCategory;
+var getCategoryById = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var category, err_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, product_1.default.find({ id: Number(req.params.id) })];
+                return [4 /*yield*/, category_1.default.find({ id: Number(req.params.id) })];
             case 1:
-                product = _a.sent();
-                res.send(product);
+                category = _a.sent();
+                res.send(category);
                 return [3 /*break*/, 3];
             case 2:
                 err_2 = _a.sent();
@@ -82,20 +80,18 @@ var getOneProduct = function (req, res) { return __awaiter(void 0, void 0, void 
         }
     });
 }); };
-exports.getOneProduct = getOneProduct;
-var addProduct = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var productObject, product, savedProduct, err_3;
+exports.getCategoryById = getCategoryById;
+var addCategory = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var category, savedCategory, err_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                productObject = req.body;
-                validatorProduct_1.default(productObject);
-                product = new product_1.default(req.body);
-                return [4 /*yield*/, product.save()];
+                category = new category_1.default(req.body);
+                return [4 /*yield*/, category.save()];
             case 1:
-                savedProduct = _a.sent();
-                res.send(savedProduct);
+                savedCategory = _a.sent();
+                res.send(savedCategory);
                 return [3 /*break*/, 3];
             case 2:
                 err_3 = _a.sent();
@@ -105,19 +101,17 @@ var addProduct = function (req, res) { return __awaiter(void 0, void 0, void 0, 
         }
     });
 }); };
-exports.addProduct = addProduct;
-var updateProduct = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var productObject, product, err_4;
+exports.addCategory = addCategory;
+var removeCategory = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var category, err_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                productObject = req.body;
-                validatorProduct_1.default(productObject);
-                return [4 /*yield*/, product_1.default.findOneAndUpdate({ id: Number(req.params.id) }, req.body, { new: true })];
+                return [4 /*yield*/, category_1.default.deleteMany({ id: Number(req.params.id) }, { new: true })];
             case 1:
-                product = _a.sent();
-                res.send(product);
+                category = _a.sent();
+                res.send("Category deleted");
                 return [3 /*break*/, 3];
             case 2:
                 err_4 = _a.sent();
@@ -127,17 +121,17 @@ var updateProduct = function (req, res) { return __awaiter(void 0, void 0, void 
         }
     });
 }); };
-exports.updateProduct = updateProduct;
-var deleteProduct = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var product, err_5;
+exports.removeCategory = removeCategory;
+var updateCategory = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var category, err_5;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, product_1.default.deleteMany({ id: Number(req.params.id) }, { new: true })];
+                return [4 /*yield*/, category_1.default.findOneAndUpdate({ id: Number(req.params.id) }, req.body, { new: true })];
             case 1:
-                product = _a.sent();
-                res.send("Product deleted");
+                category = _a.sent();
+                res.send(category);
                 return [3 /*break*/, 3];
             case 2:
                 err_5 = _a.sent();
@@ -147,57 +141,5 @@ var deleteProduct = function (req, res) { return __awaiter(void 0, void 0, void 
         }
     });
 }); };
-exports.deleteProduct = deleteProduct;
-var getProductCategory = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var product, err_6;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, product_1.default.find({ category: Number(req.params.category) })];
-            case 1:
-                product = _a.sent();
-                res.send(product);
-                return [3 /*break*/, 3];
-            case 2:
-                err_6 = _a.sent();
-                res.send(err_6);
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
-        }
-    });
-}); };
-exports.getProductCategory = getProductCategory;
-var addProductByCategory = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, category_1.default.exists({ id: Number(req.params.category) }, function (err, result) {
-                    if (err) {
-                        res.send(err);
-                    }
-                    else {
-                        if (result) {
-                            var product_2 = new product_1.default(req.body);
-                            product_2.category = Number(req.params.category);
-                            product_2.save(function (err) {
-                                if (err) {
-                                    res.send(err);
-                                }
-                                else {
-                                    res.send(product_2);
-                                }
-                            });
-                        }
-                        else {
-                            res.send("Invalid category!");
-                        }
-                    }
-                })];
-            case 1:
-                _a.sent();
-                return [2 /*return*/];
-        }
-    });
-}); };
-exports.addProductByCategory = addProductByCategory;
-//# sourceMappingURL=product_controller.js.map
+exports.updateCategory = updateCategory;
+//# sourceMappingURL=category_controller.js.map

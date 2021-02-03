@@ -20,20 +20,11 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var mongoose_1 = __importStar(require("mongoose"));
-var supplierSchema = new mongoose_1.Schema({
-    id: { type: Number, required: true },
-    name: { type: String, required: true }
-});
-var ProductSchema = new mongoose_1.Schema({
+var ProductCategorySchema = new mongoose_1.Schema({
     id: { type: Number, required: true },
     name: { type: String, required: true },
     description: { type: String, required: true },
-    price: { type: Number, required: true },
-    weight: { type: Number, required: true },
-    category: { type: Number, required: true },
-    supplier: { type: supplierSchema, required: true },
-    imageUrl: { type: String, required: true },
 });
-var Product = mongoose_1.default.model("Product", ProductSchema);
-exports.default = Product;
-//# sourceMappingURL=product.js.map
+var ProductCategory = mongoose_1.default.model("ProductCategory", ProductCategorySchema);
+exports.default = ProductCategory;
+//# sourceMappingURL=category.js.map
