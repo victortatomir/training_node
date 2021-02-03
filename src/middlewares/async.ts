@@ -1,5 +1,4 @@
-//import { next } from "express"
-import express, { Application, Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from "express";
 
 export const asyncMiddleware = (
   handler: (req: Request, res: Response) => Promise<void>
