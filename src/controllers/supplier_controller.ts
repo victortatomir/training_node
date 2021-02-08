@@ -7,18 +7,11 @@ export const getSupplier = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  try {
-    const supplier = await Supplier.find();
-    if (supplier.lenght < 1) {
-      res.status(404).send("No supplier");
-    } else {
-      res.status(200).send(supplier);
-    }
-  } catch (err) {
-    console.log(err);
-    const status = err.statusCode() || 500;
-    const message = err.getMessage();
-    res.status(status).send(message);
+  const supplier = await Supplier.find();
+  if (supplier.lenght < 1) {
+    res.status(404).send("No supplier");
+  } else {
+    res.status(200).send(supplier);
   }
 };
 
@@ -26,18 +19,11 @@ export const getSupplierById = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  try {
-    const supplier = await Supplier.find({ id: Number(req.params.id) });
-    if (supplier.length < 1) {
-      res.status(404).send("A supplier with this id doesn't exist");
-    } else {
-      res.status(200).send(supplier);
-    }
-  } catch (err) {
-    console.log(err);
-    const status = err.statusCode() || 500;
-    const message = err.getMessage();
-    res.status(status).send(message);
+  const supplier = await Supplier.find({ id: Number(req.params.id) });
+  if (supplier.length < 1) {
+    res.status(404).send("A supplier with this id doesn't exist");
+  } else {
+    res.status(200).send(supplier);
   }
 };
 
@@ -45,60 +31,39 @@ export const addSupplier = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  try {
-    const supplierObeject: SupplierInterface = req.body;
-    validateSupplier(supplierObeject);
-    const supplier = new Supplier(req.body);
-    const savedSupplier = await supplier.save();
-    res.status(201).send(savedSupplier);
-  } catch (err) {
-    console.log(err);
-    const status = err.statusCode() || 500;
-    const message = err.getMessage();
-    res.status(status).send(message);
-  }
+  const supplierObeject: SupplierInterface = req.body;
+  validateSupplier(supplierObeject);
+  const supplier = new Supplier(req.body);
+  const savedSupplier = await supplier.save();
+  res.status(201).send(savedSupplier);
 };
 
 export const removeSupplier = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  try {
-    await Supplier.deleteMany({ id: Number(req.params.id) }, { new: true });
-    res.status(200).send("Supplier deleted");
-  } catch (err) {
-    console.log(err);
-    const status = err.statusCode() || 500;
-    const message = err.getMessage();
-    res.status(status).send(message);
-  }
+  await Supplier.deleteMany({ id: Number(req.params.id) }, { new: true });
+  res.status(200).send("Supplier deleted");
 };
 
 export const updateSupplier = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  try {
-    const supplierObeject: SupplierInterface = req.body;
-    validateSupplier(supplierObeject);
-    const supplier = await Supplier.findOneAndUpdate(
-      { id: Number(req.params.id) },
-      req.body,
-      { new: true }
+  const supplierObeject: SupplierInterface = req.body;
+  validateSupplier(supplierObeject);
+  const supplier = await Supplier.findOneAndUpdate(
+    { id: Number(req.params.id) },
+    req.body,
+    { new: true }
+  );
+  if (supplier) {
+    const prod = await Product.updateMany(
+      { "supplier.id": Number(req.body["id"]) },
+      { $set: { "supplier.name": req.body["name"] } }
     );
-    if (supplier) {
-      const prod = await Product.updateMany(
-        { "supplier.id": Number(req.body["id"]) },
-        { $set: { "supplier.name": req.body["name"] } }
-      );
-      res.status(200).send(prod);
-    } else {
-      res.status(404).send("No category");
-    }
-  } catch (err) {
-    console.log(err);
-    const status = err.statusCode() || 500;
-    const message = err.getMessage();
-    res.status(status).send(message);
+    res.status(200).send(prod);
+  } else {
+    res.status(404).send("No category");
   }
 };

@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "@microsoft/tsdoc": "^0.13.0",
     "@shelf/jest-mongodb": "^1.2.3",
     "@types/hapi__joi": "^17.1.6",
     "@types/mongoose": "^5.10.3",

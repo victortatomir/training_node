@@ -5,74 +5,49 @@ export const getOrderDetail = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  try {
-    const orderDetail = await OrderDetail.find();
-    res.status(200).send(orderDetail);
-  } catch (err) {
-    console.log(err);
-    res.send(err);
-  }
+  const orderDetail = await OrderDetail.find();
+  res.status(200).send(orderDetail);
 };
 
 export const getOrderDetailById = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  try {
-    const orderDetail = await OrderDetail.find({
-      order: Number(req.params.order),
-      product: Number(req.params.product),
-    });
-    res.status(200).send(orderDetail);
-  } catch (err) {
-    console.log(err);
-    res.send(err);
-  }
+  const orderDetail = await OrderDetail.find({
+    order: Number(req.params.order),
+    product: Number(req.params.product),
+  });
+  res.status(200).send(orderDetail);
 };
 
 export const addOrderDetail = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  try {
-    const orderDetail = new OrderDetail(req.body);
-    const savedOrderDetail = orderDetail.save();
-    res.status(200).send(savedOrderDetail);
-  } catch (err) {
-    console.log(err);
-    res.send(err);
-  }
+  const orderDetail = new OrderDetail(req.body);
+  const savedOrderDetail = orderDetail.save();
+  res.status(200).send(savedOrderDetail);
 };
 
 export const removeOrderDetail = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  try {
-    await OrderDetail.deleteMany(
-      { order: Number(req.params.order), product: Number(req.params.product) },
-      { new: true }
-    );
-    res.status(200).send("OrderDetail deleted");
-  } catch (err) {
-    console.log(err);
-    res.send(err);
-  }
+  await OrderDetail.deleteMany(
+    { order: Number(req.params.order), product: Number(req.params.product) },
+    { new: true }
+  );
+  res.status(200).send("OrderDetail deleted");
 };
 
 export const updateOrderDetail = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  try {
-    const orderDetail = await OrderDetail.findOneAndUpdate(
-      { order: Number(req.params.order), product: Number(req.params.product) },
-      req.body,
-      { new: true }
-    );
-    res.status(200).send(orderDetail);
-  } catch (err) {
-    console.log(err);
-    res.send(err);
-  }
+  const orderDetail = await OrderDetail.findOneAndUpdate(
+    { order: Number(req.params.order), product: Number(req.params.product) },
+    req.body,
+    { new: true }
+  );
+  res.status(200).send(orderDetail);
 };

@@ -12,38 +12,26 @@ jest.mock("../models/supplier", () => ({
   },
 }));
 describe("When data is valid", () => {
+  const testValues = [
+    {
+      _id: "60095baf25f5c65fa4d8f03a",
+      id: 10,
+      name: "test",
+      __v: 0,
+    },
+    {
+      _id: "60095baf25f5c65fa4d8f03b",
+      id: 11,
+      name: "testare",
+      __v: 0,
+    },
+  ];
   beforeEach(async () => {
     mockFind.mockReset();
   });
   it("Should return all entries", async () => {
-    mockFind.mockResolvedValueOnce([
-      {
-        _id: "60095baf25f5c65fa4d8f03a",
-        id: 10,
-        name: "test",
-        __v: 0,
-      },
-      {
-        _id: "60095baf25f5c65fa4d8f03b",
-        id: 11,
-        name: "testare",
-        __v: 0,
-      },
-    ]);
-    const expected = [
-      {
-        _id: "60095baf25f5c65fa4d8f03a",
-        id: 10,
-        name: "test",
-        __v: 0,
-      },
-      {
-        _id: "60095baf25f5c65fa4d8f03b",
-        id: 11,
-        name: "testare",
-        __v: 0,
-      },
-    ];
+    mockFind.mockResolvedValueOnce(testValues);
+    const expected = testValues;
 
     const req = ({ body: {} } as unknown) as Request;
     const res = httpMocks.createResponse();
@@ -96,16 +84,16 @@ describe("When data is valid", () => {
     };
 
     const req = httpMocks.createRequest({
-      method:"POST",
-      url:"/supplier",
-      body:{
-        id:20,
-        name:"test"
-      }
-    })
+      method: "POST",
+      url: "/supplier",
+      body: {
+        id: 20,
+        name: "test",
+      },
+    });
 
     const res = httpMocks.createResponse();
-    await SupplierController.addSupplier(req,res);
+    await SupplierController.addSupplier(req, res);
     expect(res._getData()).toEqual(expected);
   });
 });

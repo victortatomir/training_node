@@ -13,10 +13,10 @@ import stockRouter from "./routes/stockRoute";
 import supplierRouter from "./routes/supplierRoute";
 
 const app: Application = express();
-const port = 3001;
-const db = "mongodb://localhost/OnlineShop";
+const port = process.env.PORT || 3001;
+const dbString = "mongodb://localhost/OnlineShop";
 
-connect(db);
+connect(dbString);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
