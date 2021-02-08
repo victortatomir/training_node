@@ -11,7 +11,7 @@ export const asyncMiddleware = (
     try {
       await handler(request, res, next);
     } catch (err) {
-      const status = err.statusCode() || 500;
+      const status = err.statusCode || 500;
       const message = err.message || err;
       console.log(err);
       res.status(status).send(message);
