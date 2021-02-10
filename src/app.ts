@@ -12,7 +12,7 @@ import orderDetailRouter from "./routes/orderDetailRoute";
 import stockRouter from "./routes/stockRoute";
 import supplierRouter from "./routes/supplierRoute";
 import userRouter from "./routes/loginRoute";
-import authenticateJWT from "./middlewares/authenticateJWT"
+import authenticateJWT from "./middlewares/authenticateJWT";
 
 const app: Application = express();
 const port = process.env.PORT || 3001;
@@ -27,7 +27,7 @@ app.use(cors());
 //                  Rest calls for user
 // ------------------------------------------------------------------------------------
 
-app.use("/login", userRouter)
+app.use("/login", userRouter);
 
 //                  Rest calls for products
 // ------------------------------------------------------------------------------------
@@ -68,7 +68,7 @@ app.use("/stock", stockRouter);
 //                 Rest calls for Supplier
 //-------------------------------------------------------------------------------------
 
-app.use("/supplier",authenticateJWT, supplierRouter);
+app.use("/supplier", supplierRouter);
 
 app.listen(port, () => {
   console.log(`Server running on ${port}`);

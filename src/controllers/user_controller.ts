@@ -1,9 +1,7 @@
 import { Request, Response } from "express";
 import Login from "../models/user";
 import jwt from "jsonwebtoken";
-import { accesTokenSecret, refreshTokenSecret } from "../utils/accesTokenForServer";
-
-const refreshTokens:string[] = [];
+import { accesTokenSecret } from "../utils/accesTokenForServer";
 
 export const loginUser = async (req: Request, res: Response): Promise<void> => {
   const { username, password } = req.body;
@@ -16,14 +14,8 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
       accesTokenSecret,
       { expiresIn: "1hr" }
     );
-    const refreshToken = jwt.sign(
-      { username: user.username, role: user.role },
-      refreshTokenSecret
-    );
 
-    refreshTokens.push(refreshToken);
-
-    res.status(200).json({ accesToken, refreshToken });
+    res.status(200).json({ accesToken });
   } else {
     res.status(400).send("Username or password incorrect");
   }
@@ -34,4 +26,3 @@ export const addUser = async (req: Request, res: Response): Promise<void> => {
   const savedUser = await user.save();
   res.status(200).send(savedUser);
 };
-
