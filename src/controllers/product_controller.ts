@@ -1,7 +1,9 @@
 import { Request, Response } from "express";
 import ProductCategory from "../models/category";
 import Product, { ProductInterface } from "../models/product";
-import validatorProduct from "../validators/products/validatorProduct";
+import { getStrategy } from "../validators/validatorStrategy";
+
+const validateStrategy = getStrategy("product");
 
 export const allProducts = async (
   req: Request,
@@ -24,7 +26,8 @@ export const addProduct = async (
   res: Response
 ): Promise<void> => {
   const productObject: ProductInterface = req.body;
-  validatorProduct(productObject);
+  
+  validateStrategy.validateData(productObject);
   const product = new Product(req.body);
   const savedProduct = await product.save();
   res.status(200).send(savedProduct);
@@ -35,7 +38,7 @@ export const updateProduct = async (
   res: Response
 ): Promise<void> => {
   const productObject: ProductInterface = req.body;
-  validatorProduct(productObject);
+  validateStrategy.validateData(productObject);
   const product = await Product.findOneAndUpdate(
     { id: Number(req.params.id) },
     req.body,

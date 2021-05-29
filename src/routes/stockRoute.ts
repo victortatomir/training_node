@@ -1,6 +1,10 @@
 import express from "express";
 import { asyncMiddleware } from "../middlewares/async";
 import * as StockController from "../controllers/stock_controller";
+import passport from 'passport';
+import * as passportConfig from '../utils/passport';
+
+passportConfig
 
 const stockRouter = express.Router();
 
@@ -10,7 +14,7 @@ stockRouter.get(
   asyncMiddleware(StockController.getStockById)
 );
 
-stockRouter.post("", asyncMiddleware(StockController.addStock));
+stockRouter.post("", passport.authenticate('jwt',{session:false}), asyncMiddleware(StockController.addStock));
 
 stockRouter.put(
   "/:product/:location",

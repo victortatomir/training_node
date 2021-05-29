@@ -1,7 +1,10 @@
 import { Request, Response } from "express";
 import Supplier, { SupplierInterface } from "../models/supplier";
 import Product from "../models/product";
-import validateSupplier from "../validators/suppliers/validator";
+import { IGetUserAuthInfoRequest } from "../utils/reqUser";
+import { getStrategy } from "../validators/validatorStrategy";
+
+const ValidationStrategy = getStrategy("supplier");
 
 export const getSupplier = async (
   req: Request,
@@ -28,14 +31,19 @@ export const getSupplierById = async (
 };
 
 export const addSupplier = async (
-  req: Request,
+  req: IGetUserAuthInfoRequest,
   res: Response
 ): Promise<void> => {
-  const supplierObeject: SupplierInterface = req.body;
-  validateSupplier(supplierObeject);
-  const supplier = new Supplier(req.body);
-  const savedSupplier = await supplier.save();
-  res.status(201).send(savedSupplier);
+  const { role } = req.user;
+  if (role !== "admin") {
+    res.status(403).send("Not allowed");
+  } else {
+    const supplierObeject: SupplierInterface = req.body;
+    ValidationStrategy.validateData(supplierObeject);
+    const supplier = new Supplier(req.body);
+    const savedSupplier = await supplier.save();
+    res.status(201).send(savedSupplier);
+  }
 };
 
 export const removeSupplier = async (
@@ -51,7 +59,7 @@ export const updateSupplier = async (
   res: Response
 ): Promise<void> => {
   const supplierObeject: SupplierInterface = req.body;
-  validateSupplier(supplierObeject);
+  ValidationStrategy.validateData(supplierObeject);
   const supplier = await Supplier.findOneAndUpdate(
     { id: Number(req.params.id) },
     req.body,

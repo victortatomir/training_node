@@ -11,6 +11,8 @@ import orderRouter from "./routes/orderRouter";
 import orderDetailRouter from "./routes/orderDetailRoute";
 import stockRouter from "./routes/stockRoute";
 import supplierRouter from "./routes/supplierRoute";
+import userRouter from "./routes/loginRoute";
+import authenticateJWT from "./middlewares/authenticateJWT";
 
 const app: Application = express();
 const port = process.env.PORT || 3001;
@@ -21,6 +23,11 @@ connect(dbString);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
+
+//                  Rest calls for user
+// ------------------------------------------------------------------------------------
+
+app.use("/login", userRouter);
 
 //                  Rest calls for products
 // ------------------------------------------------------------------------------------
